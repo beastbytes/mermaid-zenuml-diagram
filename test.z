@@ -1,0 +1,25 @@
+  title Online shopping
+  @Actor Customer
+  Customer -> Website.browse() {
+    Backend.loadProducts()
+  }
+  Customer -> Website.addToCart(p1, p2) {
+    Backend.updateCart()
+  }
+  Customer -> Website.submitOrder(p1, p2) {
+    Backend.createOrder()
+  }
+  Customer -> Website.checkout(paymentInfo) {
+    Backend.checkout(paymentInfo) {
+      result = PaymentGateway.processPaymentInfo()
+      updateOrder(result)
+      if (result == success) {
+        DeliverySystem.register()
+        DeliverySystem -> Customer: Deliver the order
+      }
+      else {
+        return rejected
+        @return Website -> Customer: rejected
+      }
+    }
+  }
