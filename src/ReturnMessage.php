@@ -8,8 +8,10 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\ZenumlDiagram;
 
+/** @link https://zenuml.com/docs/language-guide/messages */
 final class ReturnMessage implements ItemInterface
 {
+    use CommentTrait;
     use QuoteTrait;
 
     public function __construct(private readonly AsyncMessage|string $value)
@@ -19,10 +21,16 @@ final class ReturnMessage implements ItemInterface
     /** @internal */
     public function render(string $indentation): string
     {
-        if (is_string($this->value)) {
-            return $indentation . 'return ' . $this->quote($this->value);
-        }
+        $output = [];
+        $this->renderComment($indentation, $output);
 
-        return $indentation . '@return ' . $this->value->render('');
+        $output[] = $indentation
+            . (is_string($this->value)
+                ? 'return ' . $this->quote($this->value)
+                : '@return ' . $this->value->render('')
+            )
+        ;
+
+        return implode("\n", $output);
     }
 }

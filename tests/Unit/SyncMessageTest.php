@@ -4,6 +4,7 @@ use BeastBytes\Mermaid\ZenumlDiagram\AsyncMessage;
 use BeastBytes\Mermaid\ZenumlDiagram\SyncMessage;
 use BeastBytes\Mermaid\ZenumlDiagram\Participant;
 
+defined('COMMENT') or define('COMMENT', 'comment');
 defined('MESSAGE') or define('MESSAGE', 'message');
 defined('METHOD') or define('METHOD', 'method');
 
@@ -124,5 +125,19 @@ test('Sync Message with return value', function () {
                 ->render('')
         )
         ->toBe('string a = A.' . METHOD . '()')
+    ;
+});
+
+test('Sync Message with comment', function () {
+    expect(
+        (new SyncMessage(
+            METHOD,
+            new Participant('A'),
+            new Participant('B')
+        ))
+            ->withComment(COMMENT)
+            ->render('')
+    )
+        ->toBe('// ' . COMMENT . "\nA -> B." . METHOD . '()')
     ;
 });

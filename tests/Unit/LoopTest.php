@@ -3,6 +3,8 @@
 use BeastBytes\Mermaid\ZenumlDiagram\Loop;
 use BeastBytes\Mermaid\ZenumlDiagram\LoopType;
 
+defined('COMMENT') or define('COMMENT', 'comment');
+
 test('Loop', function (LoopType $loopType, string $condition, string $result) {
     expect((new Loop($condition, $loopType))->render(''))
         ->toBe($result);
@@ -15,3 +17,13 @@ test('Loop', function (LoopType $loopType, string $condition, string $result) {
         [LoopType::While, 'the sun is shining', "while (\"the sun is shining\") {\n}"]
     ])
 ;
+
+
+test('Loop with comment', function () {
+    expect(
+        (new Loop('hourly'))
+            ->withComment(COMMENT)
+            ->render('')
+    )
+        ->toBe('// ' . COMMENT . "\nloop (hourly) {\n}");
+});

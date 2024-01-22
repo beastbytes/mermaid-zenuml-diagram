@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\ZenumlDiagram;
 
-use BeastBytes\Mermaid\CommentTrait;
 use BeastBytes\Mermaid\Mermaid;
 use BeastBytes\Mermaid\MermaidInterface;
 use BeastBytes\Mermaid\RenderItemsTrait;
@@ -17,6 +16,7 @@ use Stringable;
 
 final class ZenumlDiagram implements MermaidInterface, Stringable
 {
+    use CommentTrait;
     use ItemTrait;
     use RenderItemsTrait;
     use TitleTrait;
@@ -50,6 +50,7 @@ final class ZenumlDiagram implements MermaidInterface, Stringable
         $output = [];
 
         $output[] = self::TYPE;
+        $this->renderComment(Mermaid::INDENTATION, $output);
 
         if ($this->title !== '') {
             $output[] = Mermaid::INDENTATION . 'title ' . $this->title;

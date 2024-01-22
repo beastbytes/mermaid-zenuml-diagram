@@ -8,8 +8,9 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\ZenumlDiagram;
 
-final class CreateMessage extends Block implements ItemInterface
+final class CreateMessage extends Block
 {
+    use CommentTrait;
     use ParameterTrait;
 
     public function __construct(private readonly Participant $participant)
@@ -19,6 +20,9 @@ final class CreateMessage extends Block implements ItemInterface
     /** @internal */
     public function render(string $indentation): string
     {
+        $output = [];
+        $this->renderComment($indentation, $output);
+
         $message = $indentation
             . 'new '
             . $this->participant->getId()
@@ -26,11 +30,12 @@ final class CreateMessage extends Block implements ItemInterface
         ;
 
         if ($this->hasItems()) {
-            $output = [];
-            $this->renderBlock($message, $indentation, $output);
-            return implode("\n", $output);
+            $this->setType($message);
+            $this->renderBlock($indentation, $output);
+        } else {
+            $output[] =  $message;
         }
 
-        return $message;
+        return implode("\n", $output);
     }
 }

@@ -4,6 +4,7 @@ use BeastBytes\Mermaid\ZenumlDiagram\AsyncMessage;
 use BeastBytes\Mermaid\ZenumlDiagram\CreateMessage;
 use BeastBytes\Mermaid\ZenumlDiagram\Participant;
 
+defined('COMMENT') or define('COMMENT', 'comment');
 defined('MESSAGE') or define('MESSAGE', 'message');
 
 test('Create Message', function () {
@@ -61,5 +62,17 @@ test('Create Message with items', function () {
                 ->render('')
         )
             ->toBe("new A(p1) {\n  B: " . MESSAGE . "\n}")
+    ;
+});
+
+test('Create Message with comment', function () {
+    expect(
+        (new CreateMessage(
+            new Participant('A')
+        ))
+            ->withComment(COMMENT)
+            ->render('')
+    )
+        ->toBe('// ' . COMMENT . "\nnew A()")
     ;
 });

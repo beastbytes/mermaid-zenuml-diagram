@@ -16,6 +16,8 @@ use BeastBytes\Mermaid\ZenumlDiagram\ReturnMessage;
 use BeastBytes\Mermaid\ZenumlDiagram\SyncMessage;
 use BeastBytes\Mermaid\ZenumlDiagram\ZenumlDiagram;
 
+defined('COMMENT') or define('COMMENT', 'comment');
+
 // https://zenuml.com/docs/examples/sequence-diagram-online-shop
 test('Online Shopping Diagram', function () {
     $backend = new Participant('BackEnd');
@@ -26,6 +28,7 @@ test('Online Shopping Diagram', function () {
 
     expect(
         (new ZenumlDiagram())
+            ->withComment(COMMENT)
             ->withTitle('Online shopping')
             ->withParticipant($customer)
             ->withItem(
@@ -72,6 +75,7 @@ test('Online Shopping Diagram', function () {
     )
         ->toBe("<pre class=\"mermaid\">\n"
             . "zenuml\n"
+            . '  // ' . COMMENT . "\n"
             . "  title Online shopping\n"
             . "  @Actor Customer\n"
             . "  Customer -&gt; Website.browse() {\n"

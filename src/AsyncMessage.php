@@ -8,11 +8,11 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\ZenumlDiagram;
 
-use Stringable;
-
 /** @link https://zenuml.com/docs/language-guide/messages */
 final class AsyncMessage implements ItemInterface
 {
+    use CommentTrait;
+
     /**
      * @param string $message Message content
      * @param Participant $participant1 The Sender or the Recipient if in a CreateMessage or SyncMessage and $participant2 is NULL
@@ -29,11 +29,16 @@ final class AsyncMessage implements ItemInterface
     /** @internal */
     public function render(string $indentation): string
     {
-        return $indentation
+        $output = [];
+        $this->renderComment($indentation, $output);
+
+        $output[] = $indentation
             . $this->participant1->getId()
             . ($this->participant2 === null ? '' : ' -> ' . $this->participant2->getId())
             . ': '
             . $this->message
         ;
+
+        return implode("\n", $output);
     }
 }

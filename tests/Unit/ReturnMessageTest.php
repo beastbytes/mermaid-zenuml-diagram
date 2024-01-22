@@ -4,6 +4,7 @@ use BeastBytes\Mermaid\ZenumlDiagram\AsyncMessage;
 use BeastBytes\Mermaid\ZenumlDiagram\Participant;
 use BeastBytes\Mermaid\ZenumlDiagram\ReturnMessage;
 
+defined('COMMENT') or define('COMMENT', 'comment');
 defined('RETURN_VALUE') or define('RETURN_VALUE', 'return value');
 
 test('Return Message', function () {
@@ -11,7 +12,7 @@ test('Return Message', function () {
         (new ReturnMessage(RETURN_VALUE))
             ->render('')
     )
-        ->toBe('return "return value"')
+        ->toBe('return "' . RETURN_VALUE . '"')
     ;
 });
 
@@ -26,6 +27,16 @@ test('Return Async Message', function () {
         ))
             ->render('')
     )
-        ->toBe("@return A -> B: return value")
+        ->toBe('@return A -> B: ' . RETURN_VALUE)
+    ;
+});
+
+test('Return Message with comment', function () {
+    expect(
+        (new ReturnMessage(RETURN_VALUE))
+            ->withComment(COMMENT)
+            ->render('')
+    )
+        ->toBe('// ' . COMMENT . "\nreturn \"" . RETURN_VALUE . '"')
     ;
 });

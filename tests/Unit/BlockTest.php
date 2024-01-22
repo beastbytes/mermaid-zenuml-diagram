@@ -10,13 +10,12 @@ use BeastBytes\Mermaid\ZenumlDiagram\LoopType;
 use BeastBytes\Mermaid\ZenumlDiagram\Opt;
 use BeastBytes\Mermaid\ZenumlDiagram\Par;
 use BeastBytes\Mermaid\ZenumlDiagram\Participant;
+use BeastBytes\Mermaid\ZenumlDiagram\Style;
 
 defined('MESSAGE') or define('MESSAGE', 'message');
 
 test('Block', function () {
-    $output = [];
-
-    (new Block())
+    expect((new Block())
         ->withItem(
             new AsyncMessage(
                 MESSAGE,
@@ -24,15 +23,47 @@ test('Block', function () {
                 new Participant('B')
             )
         )
-        ->renderBlock('block', '', $output)
-    ;
+        ->setType('block')
+        ->render('')
+    )
+        ->toBe("block {\n"
+            . '  A -> B: ' . MESSAGE . "\n"
+            . '}'
+        );
+});
 
-    expect($output)
-        ->toBe([
-            'block {',
-            '  A -> B: ' . MESSAGE,
-            '}'
-        ]);
+test('Block with comments', function() {
+    $block = (new Block())->setType('block');
+
+    expect($block
+        ->withComment('Comment 1', 'Comment 2')
+        ->render('')
+    )
+        ->toBe("// Comment 1\n"
+            . "// Comment 2\n"
+            . "block {\n"
+            . '}'
+        )
+        ->and($block
+            ->withStyle(Style::Bold, Style::Italic)
+            ->render('')
+        )
+        ->toBe("// [font-bold, italic]\n"
+             . "block {\n"
+             . '}'
+        )
+        ->and($block
+            ->withStyle(Style::Bold, Style::Italic)
+            ->withComment('Comment 1', 'Comment 2')
+            ->render('')
+        )
+        ->toBe("// Comment 1\n"
+            . "// Comment 2\n"
+            . "// [font-bold, italic]\n"
+            . "block {\n"
+            . '}'
+        )
+    ;
 });
 
 test('Nested Blocks', function() {

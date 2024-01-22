@@ -13,6 +13,7 @@ use BeastBytes\Mermaid\RenderItemsTrait;
 /** https://zenuml.com/docs/language-guide/participant-and-group#participant-group */
 final class Group
 {
+    use CommentTrait;
     use RenderItemsTrait;
 
     private array $participants = [];
@@ -38,6 +39,7 @@ final class Group
     public function render(string $indentation): string
     {
         $output = [];
+        $this->renderComment($indentation, $output);
 
         $output[] = $indentation . 'group ' . $this->name . ' {';
         $this->renderItems($this->participants, '', $output);

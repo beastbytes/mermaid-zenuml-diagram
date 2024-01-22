@@ -10,6 +10,8 @@ namespace BeastBytes\Mermaid\ZenumlDiagram;
 
 final class TryCatch implements ItemInterface
 {
+    use CommentTrait;
+
     public function __construct(
         private readonly Block $try,
         private readonly Block $catch,
@@ -22,10 +24,23 @@ final class TryCatch implements ItemInterface
     public function render(string $indentation): string
     {
         $output = [];
+        $this->renderComment($indentation, $output);
 
-        $this->try->renderBlock('try', $indentation, $output);
-        $this->catch->renderBlock('catch', $indentation, $output);
-        $this->finally?->renderBlock('finally', $indentation, $output);
+        $this
+            ->try
+            ->setType('try')
+            ->renderBlock($indentation, $output)
+        ;
+        $this
+            ->catch
+            ->setType('catch')
+            ->renderBlock($indentation, $output)
+        ;
+        $this
+            ->finally
+            ?->setType('finally')
+            ->renderBlock($indentation, $output)
+        ;
 
         return implode("\n", $output);
     }

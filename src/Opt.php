@@ -7,15 +7,12 @@
 declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\ZenumlDiagram;
-final class Opt extends Block implements ItemInterface
+final class Opt extends Block
 {
     private const TYPE = 'opt';
 
-    /** @internal */
-    public function render(string $indentation): string
+    public function __construct()
     {
-        $output = [];
-        $this->renderBlock(self::TYPE, $indentation, $output);
-        return implode("\n", $output);
+        $this->setType(self::TYPE);
     }
 }

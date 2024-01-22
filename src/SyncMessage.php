@@ -8,8 +8,10 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\ZenumlDiagram;
 
-final class SyncMessage extends Block implements ItemInterface
+/** @link https://zenuml.com/docs/language-guide/messages */
+final class SyncMessage extends Block
 {
+    use CommentTrait;
     use ParameterTrait;
 
     private string $returnType = '';
@@ -40,6 +42,9 @@ final class SyncMessage extends Block implements ItemInterface
     /** @internal */
     public function render(string $indentation): string
     {
+        $output = [];
+        $this->renderComment($indentation, $output);
+
         $return = '';
 
         if ($this->returnValue !== '') {
@@ -71,11 +76,12 @@ final class SyncMessage extends Block implements ItemInterface
         ;
 
         if ($this->hasItems()) {
-            $output = [];
-            $this->renderBlock($message, $indentation, $output);
-            return implode("\n", $output);
+            $this->setType($message);
+            $this->renderBlock($indentation, $output);
+        } else {
+            $output[] = $indentation . $message;
         }
 
-        return $indentation . $message;
+        return implode("\n", $output);
     }
 }

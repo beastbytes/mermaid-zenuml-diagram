@@ -4,6 +4,8 @@ use BeastBytes\Mermaid\ZenumlDiagram\Alt;
 use BeastBytes\Mermaid\ZenumlDiagram\Block;
 use BeastBytes\Mermaid\ZenumlDiagram\ConditionalBlock;
 
+defined('COMMENT') or define('COMMENT', 'comment');
+
 test('If', function () {
     expect((new Alt(new ConditionalBlock('i > 10')))
         ->render('')
@@ -38,5 +40,13 @@ test('If/ElseIf/ElseIf/Else', function () {
         ->render('')
     )
         ->toBe("if (i > 10) {\n} else if (i == 0) {\n} else if (i < 0) {\n} else {\n}");
+});
+
+test('With comment', function () {
+    expect((new Alt(new ConditionalBlock('i > 10')))
+        ->withComment(COMMENT)
+        ->render('')
+    )
+        ->toBe('// ' . COMMENT . "\nif (i > 10) {\n}");
 });
 

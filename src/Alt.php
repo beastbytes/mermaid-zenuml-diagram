@@ -8,8 +8,11 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\ZenumlDiagram;
 
+/** @link https://zenuml.com/docs/language-guide/atl */
 final class Alt implements ItemInterface
 {
+    use CommentTrait;
+
     /** @var list<ConditionalBlock> $blocks */
     private array $blocks = [];
     private ?Block $elseBlock = null;
@@ -37,14 +40,25 @@ final class Alt implements ItemInterface
     public function render(string $indentation): string
     {
         $output = [];
+        $this->renderComment($indentation, $output);
 
-        array_shift($this->blocks)?->renderBlock('if', $indentation, $output);
+        array_shift($this->blocks)
+            ?->setType('if')
+            ->renderBlock($indentation, $output)
+        ;
 
         foreach ($this->blocks as $block) {
-            $block->renderBlock('else if', $indentation, $output);
+            $block
+                ->setType('else if')
+                ->renderBlock($indentation, $output)
+            ;
         }
 
-        $this->elseBlock?->renderBlock('else', $indentation, $output);
+        $this
+            ->elseBlock
+            ?->setType('else')
+            ->renderBlock($indentation, $output)
+        ;
 
         return preg_replace('/}\s+else/', '} else', implode("\n", $output));
     }

@@ -10,16 +10,40 @@ namespace BeastBytes\Mermaid\ZenumlDiagram;
 
 use BeastBytes\Mermaid\RenderItemsTrait;
 
-class Block
+class Block implements ItemInterface
 {
+    use CommentTrait;
     use ItemTrait;
     use RenderItemsTrait;
 
-    /* @internal */
-    public function renderBlock(string $type, string $indentation, array &$output): void
+    private string $type = '';
+
+    /** @internal */
+    public function setType(string $type): self
     {
-        $output[] = $indentation . $type . ' {';
+        $this->type = $type;
+        return $this;
+    }
+
+    /** @internal */
+    public function render(string $indentation): string
+    {
+        $output = [];
+        $this->renderComment($indentation, $output);
+        $this->renderBlock($indentation, $output);
+        return implode("\n", $output);
+    }
+
+    /* @internal */
+    public function renderBlock(string $indentation, array &$output): void
+    {
+        $output[] = $indentation . $this->type . ' {';
         $this->renderItems($this->items, $indentation, $output);
         $output[] = $indentation . '}';
+    }
+
+    protected function getType(): string
+    {
+        return $this->type;
     }
 }

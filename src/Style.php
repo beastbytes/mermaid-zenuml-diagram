@@ -8,12 +8,12 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\ZenumlDiagram;
 
-final class Par extends Block
-{
-    private const TYPE = 'par';
+use Stringable;
 
-    public function __construct()
-    {
-        $this->setType(self::TYPE);
-    }
+enum Style:string
+{
+    case Bold = 'font-bold';
+    case Italic = 'italic';
+    case LineThrough = 'line-through';
+    case Underline = 'underline';
 }

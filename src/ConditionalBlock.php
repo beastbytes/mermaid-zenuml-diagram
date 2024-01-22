@@ -8,8 +8,6 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\ZenumlDiagram;
 
-use BeastBytes\Mermaid\RenderItemsTrait;
-
 class ConditionalBlock extends Block
 {
     use QuoteTrait;
@@ -19,12 +17,12 @@ class ConditionalBlock extends Block
     }
 
     /* @internal */
-    public function renderBlock(string $type, string $indentation, array &$output): void
+    public function renderBlock(string $indentation, array &$output): void
     {
-        parent::renderBlock(
-            $type . ($this->condition === '' ? '' : ' (' . $this->quote($this->condition) . ')'),
-            $indentation,
-            $output
+        $this->setType(
+            $this->getType()
+            . ($this->condition === '' ? '' : ' (' . $this->quote($this->condition) . ')')
         );
+        parent::renderBlock($indentation, $output);
     }
 }
