@@ -55,18 +55,19 @@ test('Online Shopping Diagram', function () {
                                 (new SyncMessage('updateOrder'))
                                     ->withParameter('result')
                                 ,
-                                (new Alt((new ConditionalBlock('result == success'))
-                                    ->withItem(
-                                        new SyncMessage('register', $deliverySystem),
-                                        new AsyncMessage('Deliver the order', $deliverySystem, $customer)
-                                    )
+                                (new Alt(
+                                    (new ConditionalBlock('result == success'))
+                                        ->withItem(
+                                            new SyncMessage('register', $deliverySystem),
+                                            new AsyncMessage('Deliver the order', $deliverySystem, $customer)
+                                        )
+                                    ,
+                                    (new Block())
+                                        ->withItem(
+                                            new ReturnMessage('rejected'),
+                                            new ReturnMessage(new AsyncMessage('rejected', $website, $customer))
+                                        )
                                 ))
-                                ->withElse((new Block())
-                                    ->withItem(
-                                        new ReturnMessage('rejected'),
-                                        new ReturnMessage(new AsyncMessage('rejected', $website, $customer))
-                                    )
-                                )
                             )
                     )
                 ,

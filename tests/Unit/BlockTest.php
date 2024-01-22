@@ -88,14 +88,14 @@ test('Nested Blocks', function() {
                                 )
                         )
                 )
+            ,
+            (new Block())
+                ->withItem(
+                    (new Opt())
+                        ->withItem((new CreateMessage(new Participant('Z'))))
+                )
+            ,
         ))
-            ->withElse(
-                (new Block())
-                    ->withItem(
-                        (new Opt())
-                            ->withItem((new CreateMessage(new Participant('Z'))))
-                    )
-            )
             ->render('')
     )
         ->toBe("if (i > 0) {\n"

@@ -15,24 +15,16 @@ final class Alt implements ItemInterface
 
     /** @var list<ConditionalBlock> $blocks */
     private array $blocks = [];
-    private ?Block $elseBlock = null;
 
-    public function __construct(ConditionalBlock $block)
+    public function __construct(ConditionalBlock $if, private readonly Block $else)
     {
-        $this->blocks[] = $block;
+        $this->blocks[] = $if;
     }
 
-    public function withElse(Block $elseBlock): self
+    public function withElseIf(ConditionalBlock ...$elseIf): self
     {
         $new = clone $this;
-        $new->elseBlock = $elseBlock;
-        return $new;
-    }
-
-    public function withElseIf(ConditionalBlock ...$block): self
-    {
-        $new = clone $this;
-        $new->blocks = array_merge($new->blocks, $block);
+        $new->blocks = array_merge($new->blocks, $elseIf);
         return $new;
     }
 
@@ -55,7 +47,7 @@ final class Alt implements ItemInterface
         }
 
         $this
-            ->elseBlock
+            ->else
             ?->setType('else')
             ->renderBlock($indentation, $output)
         ;
