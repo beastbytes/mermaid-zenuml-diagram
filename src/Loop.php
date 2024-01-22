@@ -13,9 +13,10 @@ final class Loop extends ConditionalBlock
 {
     use CommentTrait;
 
-    public function __construct(string $condition, private readonly LoopType $type = LoopType::Loop)
+    public function __construct(string $condition, LoopType $type = LoopType::Loop)
     {
         parent::__construct($condition);
+        $this->type = $type->value;
     }
 
     /** @internal */
@@ -23,10 +24,7 @@ final class Loop extends ConditionalBlock
     {
         $output = [];
         $this->renderComment($indentation, $output);
-        $this
-            ->setType($this->type->value)
-            ->renderBlock($indentation, $output)
-        ;
+        $this->renderBlock($indentation, $output);
         return implode("\n", $output);
     }
 }

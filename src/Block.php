@@ -16,7 +16,7 @@ class Block implements ItemInterface
     use ItemTrait;
     use RenderItemsTrait;
 
-    private string $type = '';
+    protected string $type = '';
 
     /** @internal */
     public function setType(string $type): self
@@ -40,10 +40,5 @@ class Block implements ItemInterface
         $output[] = $indentation . $this->type . ' {';
         $this->renderItems($this->items, $indentation, $output);
         $output[] = $indentation . '}';
-    }
-
-    protected function getType(): string
-    {
-        return $this->type;
     }
 }

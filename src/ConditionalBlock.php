@@ -19,10 +19,7 @@ class ConditionalBlock extends Block
     /* @internal */
     public function renderBlock(string $indentation, array &$output): void
     {
-        $this->setType(
-            $this->getType()
-            . ($this->condition === '' ? '' : ' (' . $this->quote($this->condition) . ')')
-        );
+        $this->type .= ($this->condition === '' ? '' : ' (' . $this->quote($this->condition) . ')');
         parent::renderBlock($indentation, $output);
     }
 }
