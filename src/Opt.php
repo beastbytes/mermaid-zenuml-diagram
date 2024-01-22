@@ -7,6 +7,7 @@
 declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\ZenumlDiagram;
+
 final class Opt extends Block
 {
     private const TYPE = 'opt';

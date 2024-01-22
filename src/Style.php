@@ -8,8 +8,6 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\ZenumlDiagram;
 
-use Stringable;
-
 enum Style:string
 {
     case Bold = 'font-bold';
