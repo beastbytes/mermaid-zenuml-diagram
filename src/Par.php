@@ -14,6 +14,6 @@ final class Par extends Block
 
     public function __construct()
     {
-        $this->setType(self::TYPE);
+        $this->type = self::TYPE;
     }
 }

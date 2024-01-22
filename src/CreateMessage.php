@@ -30,7 +30,7 @@ final class CreateMessage extends Block
         ;
 
         if ($this->hasItems()) {
-            $this->setType($message);
+            $this->type = $message;
             $this->renderBlock($indentation, $output);
         } else {
             $output[] =  $message;

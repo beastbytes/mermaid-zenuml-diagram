@@ -76,7 +76,7 @@ final class SyncMessage extends Block
         ;
 
         if ($this->hasItems()) {
-            $this->setType($message);
+            $this->type = $message;
             $this->renderBlock($indentation, $output);
         } else {
             $output[] = $indentation . $message;
